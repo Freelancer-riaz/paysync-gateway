@@ -19,13 +19,21 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Auto Setup Environment & Resources
+      run: |
+        echo "sdk.dir=$ANDROID_HOME" > local.properties
+        mkdir -p "$ANDROID_HOME/licenses"
+        echo -e "24333f8a63b6825ea9c5514f83c2829b004d1fee\n84831b9409646a918e30573bab4c9c91346d8abd\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
+        mkdir -p app/src/main/res/values
+        echo '<resources><string name="app_name">PaySync Gateway</string></resources>' > app/src/main/res/values/strings.xml
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '8.5'
 
     - name: Build Debug APK
-      run: gradle assembleDebug --stacktrace
+      run: gradle assembleDebug --stacktrace --no-daemon
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
