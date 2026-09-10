@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +11,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -71,12 +72,10 @@ fun PaySyncApp() {
     var isServiceActive by remember { mutableStateOf(true) }
     var selectedSim by remember { mutableStateOf("SIM 2") }
     
-    // Gateway Toggles
     var bkashEnabled by remember { mutableStateOf(true) }
     var nagadEnabled by remember { mutableStateOf(true) }
     var rocketEnabled by remember { mutableStateOf(true) }
 
-    // Universal Telegram Bot Config
     var botToken by remember { mutableStateOf("") }
     var chatId by remember { mutableStateOf("") }
     var isTestingConnection by remember { mutableStateOf(false) }
@@ -121,13 +120,13 @@ fun PaySyncApp() {
                 NavigationBarItem(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    icon = { Icon(Icons.Default.Dashboard, contentDescription = "Home") },
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
                     label = { Text("Dashboard") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
-                    icon = { Icon(Icons.Default.SimCard, contentDescription = "SIMs") },
+                    icon = { Icon(Icons.Default.Phone, contentDescription = "SIMs") },
                     label = { Text("SIM & Filter") }
                 )
                 NavigationBarItem(
@@ -175,7 +174,7 @@ fun PaySyncApp() {
                                 if (success) {
                                     Toast.makeText(context, "সফল! বটে টেস্ট মেসেজ পাঠানো হয়েছে ✅", Toast.LENGTH_LONG).show()
                                 } else {
-                                    Toast.makeText(context, "ব্যর্থ! Bot Token বা Chat ID চেক করুন ❌", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(context, "ব্যর্থ! Token বা ID চেক করুন ❌", Toast.LENGTH_LONG).show()
                                 }
                             }
                         }
@@ -269,6 +268,7 @@ fun DashboardScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimFilterScreen(
     selectedSim: String,
@@ -302,9 +302,9 @@ fun SimFilterScreen(
         Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
             Column(modifier = Modifier.padding(16.dp)) {
                 GatewaySwitch("bKash Gateway", Color(0xFFE2136E), bkash, onBkashChange)
-                Divider(color = Color.DarkGray, modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Color.DarkGray)
                 GatewaySwitch("Nagad Gateway", Color(0xFFF7941D), nagad, onNagadChange)
-                Divider(color = Color.DarkGray, modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Color.DarkGray)
                 GatewaySwitch("Rocket Gateway", Color(0xFF8C3494), rocket, onRocketChange)
             }
         }
